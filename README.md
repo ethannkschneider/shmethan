@@ -29,17 +29,20 @@ In addition to the entry file, there will be at least the following scripts:
 * grid.js -- this will be responsible for rendering the 8-bar grid
 
 ## Implementation Timeline
-Day 1:
+Day 1
 * Set up basic node modules and webpack
 * Set up basic file structure and layout
-* Get basic audio to play in the browser
-Day 2:
+* Get basic audio to play in the browser  
+
+Day 2
 * Get basic user interaction functionality (e.g. play and pause)
-* Get very familiar with the Web Audio Api
-Day 3:
+* Get very familiar with the Web Audio Api  
+
+Day 3
 * Figure out how to implement the basic 8-bar grid in real time
-* Continue to improve user interaction capabilities (creating rhythms, etc)
-Day 4:
+* Continue to improve user interaction capabilities (creating rhythms, etc)  
+
+Day 4
 * Sleek styling
 * Downloading wav files
 
