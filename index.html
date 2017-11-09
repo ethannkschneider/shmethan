@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Shmethan: The Ecto-Drummer</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./css/grid.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./scripts/bundle.js"></script>
+  </head>
+
+  <body>
+    <nav>
+      <h1 id="app-title">Shmethan</h1>
+    </nav>
+    <main>
+      <section class="sequencer">
+        <div class="instrument-label-container">
+          <div class="instrument-label kick-label">
+            Kick
+          </div>
+          <div class="instrument-label snare-label">
+            Snare
+          </div>
+          <div class="instrument-label hh-label">
+            HiHat
+          </div>
+        </div>
+        <div class="grid-container">
+          <div class="grid-row">
+            <div data-beat="1" class="kick grid-node kick-m1"></div>
+            <div data-beat="2" class="kick grid-node kick-m2"></div>
+            <div data-beat="3" class="kick grid-node kick-m3"></div>
+            <div data-beat="4" class="kick grid-node kick-m4"></div>
+          </div>
+          <div class="grid-row">
+            <div data-beat="1" class="snare grid-node snare-m1"></div>
+            <div data-beat="2" class="snare grid-node snare-m2"></div>
+            <div data-beat="3" class="snare grid-node snare-m3"></div>
+            <div data-beat="4" class="snare grid-node snare-m4"></div>
+          </div>
+          <div class="grid-row">
+            <div data-beat="1" class="hh grid-node hh-m1"></div>
+            <div data-beat="2" class="hh grid-node hh-m2"></div>
+            <div data-beat="3" class="hh grid-node hh-m3"></div>
+            <div data-beat="4" class="hh grid-node hh-m4"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="right-buttons">
+        <div id="play-button">
+          <i id="pause" class="material-icons">pause</i>
+          <i id="play" class="material-icons">play_arrow</i>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,132 @@
+/*BACKGROUND FOR APP*/
+
+body {
+  background-image: linear-gradient(to top, #fad0c4 0%, #ffd1ff 100%);
+}
+
+/*HEADER STYLING*/
+
+nav {
+  /*background: #314755;
+  background: -webkit-linear-gradient(to top, #26a0da, #314755);
+  background: linear-gradient(to top, #26a0da, #314755);*/
+  height: 70px;
+  border-bottom: 3px solid black;
+}
+
+#app-title {
+  text-align: center;
+  color: #3F0D83;
+  text-shadow:
+  -1px -1px 0 #FAFAFA,
+  1px -1px 0 #FAFAFA,
+  -1px 1px 0 #FAFAFA,
+  1px 1px 0 #FAFAFA;
+  font-family: 'Open Sans', sans-serif;
+}
+
+/*MAIN STYLING*/
+
+main {
+  margin: 100px auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  /*border: 1px solid blue;*/
+  background: transparent;
+}
+
+/*SEQEUNCER STYLING*/
+.sequencer {
+  display: flex;
+}
+
+.instrument-label-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.instrument-label {
+  font-family: 'Open Sans', sans-serif;
+  color: #063D6A;
+  margin-right: 50px;
+}
+
+.grid-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.grid-row {
+  display: flex;
+  justify-content: space-around;
+}
+
+.grid-node {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background: #5F656A;
+  margin: 5px 15px;
+  border: 2px solid whitesmoke;
+}
+
+.clicked-node {
+  background: radial-gradient(#F7B843, #F7DE43, #FFFF91);
+}
+
+/*RIGHT BUTTONS STYLING*/
+
+.right-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#play-button {
+  height: 50px;
+  width: 50px;
+  background: #A1FFCE;
+  background: -webkit-linear-gradient(to right, #FAFFD1, #A1FFCE);
+  background: linear-gradient(to right, #FAFFD1, #A1FFCE);
+  border: 1px solid white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#play-button:hover {
+  background: #000428;
+  background: -webkit-linear-gradient(to right, #000428, #004e92);
+  background: linear-gradient(to right, #000428, #004e92);
+}
+
+#play-button i {
+  display: block;
+  text-shadow:
+  -1px -1px 10px #7966A0,
+  1px -1px 10px #7966A0,
+  -1px 1px 10px #7966A0,
+  1px 1px 10px #7966A0;
+}
+
+#pause {
+  color: #E45642;
+}
+
+#play {
+  color: #6EEE5A;
+}
+
+
+
+
+
+
+
+
+
+
+/*end of document*/
