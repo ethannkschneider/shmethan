@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupAudioContext();
   setupClock();
   setupClickHandlers();
+  setupSlideHandlers();
 
   sounds.forEach( (sound) => {
     loadSound(sound);
@@ -145,22 +146,25 @@ const setupClickHandlers = () => {
   });
 };
 
-// Schedule the node to play its sound on the given beat
-const activateNode = (beat, sound) => {
-  let event = clock.callbackAtTime( (newEvent) => {
-    let bufferNode = buffers[sound].createNode();
-    bufferNode.start(newEvent.deadline);
-  }, nextBeatTime(beat));
-  event.repeat(barTime);
-  event.tolerance({late: 0.01});
-  beats[sound][beat] = event;
+const setupSlideHandlers = () => {
+  // Display tempo upon slider value change
+  // Also call changeTempo to timeStretch scheduled events
+  const $tempoLabel = $("#tempo-value");
+  const $tempoSlider = $("#tempo-slider");
+  $tempoSlider.on("input change", () => {
+    let val = $tempoSlider.val();
+    $tempoLabel.text(val);
+    changeTempo(val);
+  });
 };
 
-const deactivateNode = (beat, sound) => {
-  let event = beats[sound][beat];
-  event.clear();
-  beats[sound][beat] = null;
+const changeTempo = (newTempo) => {
+  clock.timeStretch(audioContext.currentTime, allEvents, tempo / newTempo);
+  tempo = newTempo;
+  beatTime = 60 / tempo;
+  barTime = totalBeats * beatTime;
 };
+
 
 const nextBeatTime = (beat) => {
   let currentTime = audioContext.currentTime;
@@ -175,17 +179,20 @@ const nextBeatTime = (beat) => {
 
 const handlePlay = () => {
   clock.start();
-  //Starting the clock clears all prior events, so we reactivate here:
+  //Starting the clock clears all prior events, so we reactivate here.
+  // BUT, it won't clear our array of events, so I do it manually:
+  allEvents = [];
   activateNodes();
 
 };
 
 const handlePause = () => {
   clock.stop();
+  deactivateNodes();
 };
 
 // Iterate through all clicked nodes, pull out their data-attributes,
-// and activate
+// and activate.
 const activateNodes = () => {
   const $clickedNodes = $(".clicked-node");
   $clickedNodes.each ( function(index, el) {
@@ -193,6 +200,41 @@ const activateNodes = () => {
     let sound = $(this).data("sound");
     activateNode(beat, sound);
   });
+};
+
+const deactivateNodes = () => {
+  const $clickedNodes = $(".clicked-node");
+  $clickedNodes.each ( function(index, el) {
+    let beat = $(this).data("beat");
+    let sound = $(this).data("sound");
+    deactivateNode(beat, sound);
+  });
+};
+
+// Schedule the node to play its sound on the given beat
+const activateNode = (beat, sound) => {
+  let event = clock.callbackAtTime( (newEvent) => {
+    let bufferNode = buffers[sound].createNode();
+    bufferNode.start(newEvent.deadline);
+  }, nextBeatTime(beat));
+  event.repeat(barTime);
+  event.tolerance({ early: 0.1, late: 0.01});
+  beats[sound][beat] = event;
+  // Add scheduled event to allEvents so we can timestretch it later
+  allEvents.push(event);
+  console.log(`allEvents: ${allEvents.length}`);
+};
+
+const deactivateNode = (beat, sound) => {
+  let event = beats[sound][beat];
+  if (event) {
+    event.clear();
+  }
+  beats[sound][beat] = null;
+  //Remove event from allEvents so we don't timestretch it later
+  let eventIndex = allEvents.indexOf(event);
+  allEvents.splice(eventIndex, 1);
+  console.log(`allEvents: ${allEvents.length}`);
 };
 
 const loadSound = (instrumentName) => {
