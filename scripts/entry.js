@@ -2,13 +2,20 @@ import WAAClock from 'waaclock';
 
 // declare web audio api variables:
 let audioContext;
+let drumGainNode;
+let synthGainNode;
 let oscillator;
 let clock;
 let isPlaying = false;
-let sounds = ["hh1", "kick1", "snare1"];
+let drumSounds = ["hh1", "kick1", "snare1"];
+let synthSounds = [
+  "s-asharp", "s-csharp", "s-csharplow",
+  "s-dsharp", "s-dsharplow", "s-fsharp",
+  "s-fsharphigh", "s-gsharp"
+];
 let buffers = {};
-let tempo = 120;
-let totalBeats = 4;
+let tempo = 240;
+let totalBeats = 16;
 let beatTime = 60 / tempo;
 let barTime = totalBeats * beatTime;
 let beats = {
@@ -24,18 +31,28 @@ document.addEventListener('DOMContentLoaded', () => {
   setupClickHandlers();
   setupSlideHandlers();
 
-  sounds.forEach( (sound) => {
-    loadSound(sound);
+  drumSounds.forEach( (sound) => {
+    loadDrumSound(sound);
   });
+
+  synthSounds.forEach( (sound) => {
+    loadSynthSound(sound);
+  });
+
   //START TEST//
   window.beats = beats;
   window.buffers = buffers;
   //END TEST//
 });
 
+// Set up audio context, gain nodes for both drums and synth, and connect them
 const setupAudioContext = () => {
   const AudioContext = window.AudioContext || window.webkitAudioContext;
   audioContext = new AudioContext();
+  drumGainNode = audioContext.createGain();
+  synthGainNode = audioContext.createGain();
+  drumGainNode.connect(audioContext.destination);
+  synthGainNode.connect(audioContext.destination);
 
   //***TEST START***//
   // oscillator = audioContext.createOscillator();
@@ -53,7 +70,7 @@ const setupClock = () => {
 const setupClickHandlers = () => {
   //Nodes on the sequencer change color when clicked
   //They also either activate or deactive their respective events
-  $(".grid-node").click( (e) => {
+  $(".grid-node").mouseenter( (e) => {
     let $node = $(e.target);
     let nodeBeat = $node.data("beat");
     let nodeSound = $node.data("sound");
@@ -80,8 +97,25 @@ const setupSlideHandlers = () => {
   const $tempoSlider = $("#tempo-slider");
   $tempoSlider.on("input change", () => {
     let val = $tempoSlider.val();
-    $tempoLabel.text(val);
+    $tempoLabel.text(val/2);
     changeTempo(val);
+  });
+
+  //Link drum and synth gains to their respective sliders
+  const $drumGainLabel = $("#drum-gain-value");
+  const $drumGainSlider = $("#drum-gain-slider");
+  $drumGainSlider.on("input", () => {
+    let val = $drumGainSlider.val();
+    $drumGainLabel.text(val/10);
+    drumGainNode.gain.value = val / 110;
+  });
+
+  const $synthGainLabel = $("#synth-gain-value");
+  const $synthGainSlider = $("#synth-gain-slider");
+  $synthGainSlider.on("input", () => {
+    let val = $synthGainSlider.val();
+    $synthGainLabel.text(val/10);
+    synthGainNode.gain.value = val / 110;
   });
 };
 
@@ -164,7 +198,8 @@ const deactivateNode = (beat, sound) => {
   console.log(`allEvents: ${allEvents.length}`);
 };
 
-const loadSound = (instrumentName) => {
+//Load the drum sounds and connect them to drum node
+const loadDrumSound = (instrumentName) => {
   const oReq = new XMLHttpRequest();
   // Make an ajax request to fetch the audio ('true' indicates async)
   // Can't use jQuery bc it doesn't support ArrayBuffer response types
@@ -176,7 +211,7 @@ const loadSound = (instrumentName) => {
   // We then store that particular createNode function in the buffers array
   // so we can access it later.
   oReq.onload = () => {
-    console.log("Request loaded!");
+    console.log("Drum request loaded!");
     audioContext.decodeAudioData(oReq.response, (audioBuffer) => {
       let createNode = function() {
         let source = audioContext.createBufferSource();
@@ -185,7 +220,36 @@ const loadSound = (instrumentName) => {
         return source;
       };
       buffers[instrumentName] = { createNode };
-      console.log("buffer added!");
+      console.log("Drum buffer added!");
+    });
+  };
+
+  // Actually send the request
+  oReq.send();
+};
+
+const loadSynthSound = (instrumentName) => {
+  const oReq = new XMLHttpRequest();
+  // Make an ajax request to fetch the audio ('true' indicates async)
+  // Can't use jQuery bc it doesn't support ArrayBuffer response types
+  oReq.open('GET', '../audio_files/' + instrumentName + ".mp3", true);
+  oReq.responseType = 'arraybuffer';
+  // Once the request is loaded, decode the arraybuffer into an audiobuffer
+  // and pass it to the callback, which makes a createNode function to
+  // connect a bufferSource to the final destination of audioContext.
+  // We then store that particular createNode function in the buffers array
+  // so we can access it later.
+  oReq.onload = () => {
+    console.log("Synth request loaded!");
+    audioContext.decodeAudioData(oReq.response, (audioBuffer) => {
+      let createNode = function() {
+        let source = audioContext.createBufferSource();
+        source.buffer = audioBuffer;
+        source.connect(audioContext.destination);
+        return source;
+      };
+      buffers[instrumentName] = { createNode };
+      console.log("Synth buffer added!");
     });
   };
 
