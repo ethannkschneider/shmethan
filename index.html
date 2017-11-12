@@ -20,6 +20,10 @@
       <section class="sequencer">
         <!-- INSTRUMENT LABELS  -->
         <div class="instrument-label-container">
+          <!-- This blank one is to make the grid look even -->
+          <div class="instrument-label blank">
+            &nbsp;
+          </div>
           <div class="instrument-label kick-label">
             Kick
           </div>
@@ -56,6 +60,73 @@
         </div>
 
         <div class="grid-container">
+          <!-- CURRENTLY PLAYING LIGHTS -->
+          <div class="grid-row">
+            <div
+              id="light-1"
+              class="grid-node light">
+            </div>
+            <div
+              id="light-2"
+              class="grid-node light">
+            </div>
+            <div
+              id="light-3"
+              class="grid-node light">
+            </div>
+            <div
+              id="light-4"
+              class="grid-node light">
+            </div>
+            <div
+              id="light-5"
+              class="grid-node light">
+            </div>
+            <div
+              id="light-6"
+              class="grid-node light">
+            </div>
+            <div
+              id="light-7"
+              class="grid-node light">
+            </div>
+            <div
+              id="light-8"
+              class="grid-node light">
+            </div>
+            <div
+              id="light-9"
+              class="grid-node light">
+            </div>
+            <div
+              id="light-10"
+              class="grid-node light">
+            </div>
+            <div
+              id="light-11"
+              class="grid-node light">
+            </div>
+            <div
+              id="light-12"
+              class="grid-node light">
+            </div>
+            <div
+              id="light-13"
+              class="grid-node light">
+            </div>
+            <div
+              id="light-14"
+              class="grid-node light">
+            </div>
+            <div
+              id="light-15"
+              class="grid-node light">
+            </div>
+            <div
+              id="light-16"
+              class="grid-node light">
+            </div>
+          </div>
           <!-- DRUM GRID -->
 
           <!-- KICK DRUM  -->
@@ -982,28 +1053,28 @@
           <i id="pause" class="material-icons">pause</i>
           <i id="play" class="material-icons">play_arrow</i>
         </div>
+        <div class="sliders">
+          <div id="tempo-slide-container">
+            <label for="tempo-slider">
+              Tempo: <span id="tempo-value">120</span>
+            </label>
+            <input type="range" min="120" max="600" value="240" class="slider" id="tempo-slider">
+          </div>
+          <div id="synth-gain-container">
+            <label for="synth-gain-slider">
+              Synth Volume: <span id="synth-gain-value">5</span>
+            </label>
+            <input type="range" min="0" max="110" value="50" class="slider" id="synth-gain-slider">
+          </div>
+          <div id="drum-gain-container">
+            <label for="drum-gain-slider">
+              Drum Volume: <span id="drum-gain-value">5</span>
+            </label>
+            <input type="range" min="0" max="110" value="50" class="slider" id="drum-gain-slider">
+          </div>
+        </div>
       </section>
     </main>
-    <section class="sliders">
-      <div id="tempo-slide-container">
-        <label for="tempo-slider">
-          Tempo: <span id="tempo-value">120</span>
-        </label>
-        <input type="range" min="100" max="400" value="240" class="slider" id="tempo-slider">
-      </div>
-      <div id="synth-gain-container">
-        <label for="synth-gain-slider">
-          Synth Volume: <span id="synth-gain-value">5</span>
-        </label>
-        <input type="range" min="0" max="110" value="50" class="slider" id="synth-gain-slider">
-      </div>
-      <div id="drum-gain-container">
-        <label for="drum-gain-slider">
-          Drum Volume: <span id="drum-gain-value">5</span>
-        </label>
-        <input type="range" min="0" max="110" value="50" class="slider" id="drum-gain-slider">
-      </div>
-    </section>
     <footer>
     </footer>
   </body>

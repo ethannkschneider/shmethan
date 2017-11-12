@@ -1,5 +1,3 @@
-import WAAClock from 'waaclock';
-
 // declare web audio api variables:
 let audioContext;
 let drumGainNode;
@@ -14,12 +12,8 @@ let synthSounds = [
   "s-fsharphigh", "s-gsharp"
 ];
 let buffers = {};
-// tempo is calculated in terms of eight notes beats per minutes;
-// divide by two to get normal quarter-note tempo
-let tempo = 240;
+let tempo = 60;
 let totalBeats = 16;
-let beatTime = 60 / tempo;
-let barTime = totalBeats * beatTime;
 let beats = {
   "hh1": {}, "kick1": {}, "snare1": {},
   "s-asharp": {}, "s-csharp": {}, "s-csharplow": {},
@@ -29,10 +23,14 @@ let beats = {
 let allEvents = [];
 let uiEvent;
 let startTime;
+// START BETA VARS //
+let rhythmIndex = 1;
+let noteTime = 0.0;
+let timerWorker = null;
+let prevAnimTime = -1;
 
 document.addEventListener('DOMContentLoaded', () => {
   setupAudioContext();
-  setupClock();
   setupClickHandlers();
   setupSlideHandlers();
 
@@ -44,12 +42,28 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSynthSound(sound);
   });
 
+  startWorker();
+
   //START TEST//
   window.beats = beats;
-  window.buffers = buffers;
+  // window.buffers = buffers;
   window.isPlaying = isPlaying;
   //END TEST//
 });
+
+const startWorker = () => {
+  let timerWorkerBlob = new Blob([
+    "let timeoutID=0;function schedule(){timeoutID=setTimeout(function(){postMessage('schedule'); schedule();},100);} onmessage = function(e) { if (e.data == 'start') { if (!timeoutID) schedule();} else if (e.data == 'stop') {if (timeoutID) clearTimeout(timeoutID); timeoutID=0;};}"
+  ]);
+
+  let timerWorkerBlobURL = window.URL.createObjectURL(timerWorkerBlob);
+
+  timerWorker = new Worker(timerWorkerBlobURL);
+  timerWorker.onmessage = (e) => {
+    schedule();
+  };
+  timerWorker.postMessage('init');
+};
 
 // Set up audio context, gain nodes for both drums and synth, and connect them
 const setupAudioContext = () => {
@@ -59,18 +73,109 @@ const setupAudioContext = () => {
   synthGainNode = audioContext.createGain();
   drumGainNode.connect(audioContext.destination);
   synthGainNode.connect(audioContext.destination);
-
-  //***TEST START***//
-  // oscillator = audioContext.createOscillator();
-  // oscillator.connect(audioContext.destination);
-  // oscillator.start(audioContext.currentTime);
-  // oscillator.stop(audioContext.currentTime + 1);
-  //***TEST END***//
 };
 
-const setupClock = () => {
-  // Initialize the WAAClock
-  clock = new WAAClock(audioContext, {toleranceEarly: 0.1});
+const handlePlay = (e) => {
+  noteTime = 0.0;
+  startTime = audioContext.currentTime + 0.005;
+  schedule();
+  timerWorker.postMessage("start");
+};
+
+const handlePause = () => {
+  timerWorker.postMessage("stop");
+  rhythmIndex = 1;
+  $(".light").removeClass("currently-playing");
+
+};
+
+const playNote = (sound, time) => {
+  let bufferNode = buffers[sound].createNode();
+  bufferNode.start(time);
+};
+
+const schedule = () => {
+  let currentTime = audioContext.currentTime;
+  // The sequence starts at startTime, so normalize currentTime so that it's 0 at the start of the sequence.
+  currentTime -= startTime;
+  while (noteTime < currentTime + 0.120) {
+    // Convert noteTime to context time.
+    let contextPlayTime = noteTime + startTime;
+
+    // Kick
+    if (beats["kick1"][rhythmIndex]) {
+      playNote("kick1", contextPlayTime);
+    }
+
+    // Snare
+    if (beats["snare1"][rhythmIndex]) {
+        playNote("snare1", contextPlayTime);
+    }
+
+    // Hihat
+    if (beats["hh1"][rhythmIndex]) {
+        // Pan the hihat according to sequence position.
+        playNote("hh1", contextPlayTime);
+    }
+
+    // // SYNTHS
+    if (beats["s-asharp"][rhythmIndex]) {
+        playNote("s-asharp", contextPlayTime);
+    }
+
+    if (beats["s-csharp"][rhythmIndex]) {
+        playNote("s-csharp", contextPlayTime);
+    }
+
+    if (beats["s-csharplow"][rhythmIndex]) {
+        playNote("s-csharplow", contextPlayTime);
+    }
+
+    if (beats["s-dsharp"][rhythmIndex]) {
+        playNote("s-dsharp", contextPlayTime);
+    }
+
+    if (beats["s-dsharplow"][rhythmIndex]) {
+        playNote("s-dsharplow", contextPlayTime);
+    }
+
+    if (beats["s-fsharp"][rhythmIndex]) {
+        playNote("s-fsharp", contextPlayTime);
+    }
+
+    if (beats["s-fsharphigh"][rhythmIndex]) {
+        playNote("s-fsharphigh", contextPlayTime);
+    }
+
+    if (beats["s-gsharp"][rhythmIndex]) {
+        playNote("s-gsharp", contextPlayTime);
+    }
+
+
+    if (noteTime !== prevAnimTime) {
+        prevAnimTime = noteTime;
+        animateUi((rhythmIndex + 15) % 16 + 1);
+    }
+
+    nextNote();
+  }
+};
+
+const animateUi = (beat) => {
+  let prevBeat = (beat + 14) % 16 + 1;
+
+  $(`#light-${beat}`).addClass("currently-playing");
+  $(`#light-${prevBeat}`).removeClass("currently-playing");
+};
+
+const nextNote = () => {
+  let beatTime = 60.0 / tempo;
+  rhythmIndex++;
+  if (rhythmIndex > totalBeats) {
+    rhythmIndex = 1;
+  }
+
+  noteTime += 0.25 * beatTime;
 };
 
 const setupClickHandlers = () => {
@@ -96,6 +201,15 @@ const setupClickHandlers = () => {
   });
 };
 
+// Schedule the node to play its sound on the given beat
+const activateNode = (beat, sound) => {
+  beats[sound][beat] = true;
+};
+
+const deactivateNode = (beat, sound) => {
+  beats[sound][beat] = false;
+};
+
 const setupSlideHandlers = () => {
   // Display tempo upon slider value change
   // Also call changeTempo to timeStretch scheduled events
@@ -104,7 +218,7 @@ const setupSlideHandlers = () => {
   $tempoSlider.on("input change", () => {
     let val = $tempoSlider.val();
     $tempoLabel.text(val/2);
-    changeTempo(val);
+    changeTempo(val/4);
   });
 
   //Link drum and synth gains to their respective sliders
@@ -126,95 +240,9 @@ const setupSlideHandlers = () => {
 };
 
 const changeTempo = (newTempo) => {
-  clock.timeStretch(audioContext.currentTime, allEvents, tempo / newTempo);
   tempo = newTempo;
-  beatTime = 60 / tempo;
-  barTime = totalBeats * beatTime;
 };
 
-
-const handlePlay = () => {
-  clock.start();
-  startTime = audioContext.currentTime;
-  let nextUiBeatTime = nextBeatTime(0);
-  uiEvent = clock.callbackAtTime(activateUi, nextUiBeatTime)
-   .repeat(beatTime)
-   .tolerance({late: 100});
-  // Starting the clock clears all prior events, so we reactivate here.
-  // BUT, it won't clear our array of events, so I do it manually:
-  allEvents = [];
-  allEvents.push(uiEvent);
-  activateNodes();
-};
-
-const handlePause = () => {
-  clock.stop();
-  deactivateNodes();
-};
-
-const activateUi = () => {
-  let uiBeat = nextBeatTime(0);
-  let $currentNodes = $(`*[data-beat="${uiBeat}"]`);
-  console.log(`Beat: ${uiBeat}`);
-  $currentNodes.fadeTo(100, 0.3, function() { $(this).fadeTo(100, 1.0); });
-};
-
-// Iterate through all clicked nodes, pull out their data-attributes,
-// and activate.
-const activateNodes = () => {
-  const $clickedNodes = $(".clicked-node");
-  $clickedNodes.each ( function(index, el) {
-    let beat = $(this).data("beat");
-    let sound = $(this).data("sound");
-    activateNode(beat, sound);
-  });
-};
-
-const deactivateNodes = () => {
-  const $clickedNodes = $(".clicked-node");
-  $clickedNodes.each ( function(index, el) {
-    let beat = $(this).data("beat");
-    let sound = $(this).data("sound");
-    deactivateNode(beat, sound);
-  });
-};
-
-// Schedule the node to play its sound on the given beat
-const activateNode = (beat, sound) => {
-  let event = clock.callbackAtTime( (newEvent) => {
-    let bufferNode = buffers[sound].createNode();
-    bufferNode.start(newEvent.deadline);
-  }, nextBeatTime(beat));
-  event.repeat(barTime);
-  event.tolerance({ early: 0.1, late: 0.01});
-  beats[sound][beat] = event;
-  // Add scheduled event to allEvents so we can timestretch it later
-  allEvents.push(event);
-  console.log(`allEvents: ${allEvents.length}`);
-};
-
-const nextBeatTime = (beat) => {
-  let currentTime = audioContext.currentTime;
-  let currentBar = Math.floor(currentTime / barTime);
-  let currentBeat = Math.round(currentTime % barTime);
-  if (currentBeat < beat) {
-    return currentBar * barTime + beat * beatTime;
-  } else {
-    return (currentBar + 1) * barTime + beat * beatTime;
-  }
-};
-
-const deactivateNode = (beat, sound) => {
-  let event = beats[sound][beat];
-  if (event) {
-    event.clear();
-  }
-  beats[sound][beat] = null;
-  //Remove event from allEvents so we don't timestretch it later
-  let eventIndex = allEvents.indexOf(event);
-  allEvents.splice(eventIndex, 1);
-  console.log(`allEvents: ${allEvents.length}`);
-};
 
 //Load the drum sounds and connect them to drum node
 const loadDrumSound = (instrumentName) => {
@@ -229,7 +257,6 @@ const loadDrumSound = (instrumentName) => {
   // We then store that particular createNode function in the buffers array
   // so we can access it later.
   oReq.onload = () => {
-    console.log("Drum request loaded!");
     audioContext.decodeAudioData(oReq.response, (audioBuffer) => {
       let createNode = function() {
         let source = audioContext.createBufferSource();
@@ -238,7 +265,6 @@ const loadDrumSound = (instrumentName) => {
         return source;
       };
       buffers[instrumentName] = { createNode };
-      console.log("Drum buffer added!");
     });
   };
 
@@ -258,7 +284,6 @@ const loadSynthSound = (instrumentName) => {
   // We then store that particular createNode function in the buffers array
   // so we can access it later.
   oReq.onload = () => {
-    console.log("Synth request loaded!");
     audioContext.decodeAudioData(oReq.response, (audioBuffer) => {
       let createNode = function() {
         let source = audioContext.createBufferSource();
@@ -267,17 +292,12 @@ const loadSynthSound = (instrumentName) => {
         return source;
       };
       buffers[instrumentName] = { createNode };
-      console.log("Synth buffer added!");
     });
   };
 
   // Actually send the request
   oReq.send();
 };
-
-
-
-
 
 
 // End of document

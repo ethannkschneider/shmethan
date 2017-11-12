@@ -23,15 +23,6 @@ nav {
   background-image: url("../images/white-sky1.jpg");
 }
 
-@keyframes .slide {
-  0%{
-    transform: translate3d(0, 0, 0);
-  }
-  100%{
-    transform: translate3d(-1692px, 0, 0);
-  }
-}
-
 #app-title {
   z-index: 1;
   text-align: center;
@@ -86,13 +77,13 @@ main {
 .grid-node {
   height: 30px;
   width: 30px;
-  border-radius: 50%;
+  /*border-radius: 90%;*/
   background: #615fcb; /* Old browsers */
   background: -moz-linear-gradient(-45deg, #615fcb 0%, #1c12ae 50%, #5c48de 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(-45deg, #615fcb 0%,#1c12ae 50%,#5c48de 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(135deg, #615fcb 0%,#1c12ae 50%,#5c48de 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  margin: 5px 15px;
-  border: 2px solid whitesmoke;
+  margin: 5px 5px;
+  border: 2px solid #80729E;
 }
 
 .grid-node:hover {
@@ -100,7 +91,7 @@ main {
   background: -moz-linear-gradient(-45deg, #7a5fcb 0%, #4112ae 50%, #7f48de 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(-45deg, #7a5fcb 0%,#4112ae 50%,#7f48de 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(135deg, #7a5fcb 0%,#4112ae 50%,#7f48de 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  border: 2px solid #fdda2d;
+  border: 2px solid #80729E;
 }
 
 .clicked-node {
@@ -108,7 +99,7 @@ main {
   background: -moz-linear-gradient(45deg, #a9e4f7 0%, #0fb4e7 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(45deg, #a9e4f7 0%,#0fb4e7 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(45deg, #a9e4f7 0%,#0fb4e7 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  border: 2px solid whitesmoke;
+  border: 2px solid #80729E;
 }
 
 .clicked-node:hover {
@@ -116,13 +107,39 @@ main {
   background: -moz-linear-gradient(-45deg, #b3dced 0%, #29b8e5 50%, #bce0ee 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(-45deg, #b3dced 0%,#29b8e5 50%,#bce0ee 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(135deg, #b3dced 0%,#29b8e5 50%,#bce0ee 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  border: 2px solid #d6f9ff;
+  border: 2px solid #80729E;
+}
+
+.light {
+  border-radius: 50%;
+  background: #e2e2e2; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  border: 2px solid whitesmoke;
+}
+
+.light:hover {
+  background: #e2e2e2; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  border: 2px solid whitesmoke;
 }
 
 .currently-playing {
-  border: 3px solid yellow;
+  background: #fceabb; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #fceabb 0%, #fccd4d 50%, #f8b500 51%, #fbdf93 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #fceabb 0%,#fccd4d 50%,#f8b500 51%,#fbdf93 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #fceabb 0%,#fccd4d 50%,#f8b500 51%,#fbdf93 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }
 
+.currently-playing:hover {
+  background: #fceabb; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #fceabb 0%, #fccd4d 50%, #f8b500 51%, #fbdf93 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #fceabb 0%,#fccd4d 50%,#f8b500 51%,#fbdf93 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #fceabb 0%,#fccd4d 50%,#f8b500 51%,#fbdf93 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
 /*RIGHT BUTTONS STYLING*/
 
 .right-buttons {
@@ -171,8 +188,15 @@ main {
 
 /*EFFECTS SLIDERS STYLING*/
 
+.sliders {
+  width: 100%;
+}
 #tempo-slide-container, #synth-gain-container, #drum-gain-container {
-  width: 30%;
+  width: 100%;
+}
+
+label {
+  width: 100%;
 }
 
 #tempo-slider, #synth-gain-slider, #drum-gain-slider {
