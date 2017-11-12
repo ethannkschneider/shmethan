@@ -87,14 +87,17 @@ let synthSounds = [
   "s-fsharphigh", "s-gsharp"
 ];
 let buffers = {};
+// tempo is calculated in terms of eight notes beats per minutes;
+// divide by two to get normal quarter-note tempo
 let tempo = 240;
 let totalBeats = 16;
 let beatTime = 60 / tempo;
 let barTime = totalBeats * beatTime;
 let beats = {
-  "hh1": {1: null, 2: null, 3: null, 4: null},
-  "kick1": {1: null, 2: null, 3: null, 4: null},
-  "snare1": {1: null, 2: null, 3: null, 4: null}
+  "hh1": {}, "kick1": {}, "snare1": {},
+  "s-asharp": {}, "s-csharp": {}, "s-csharplow": {},
+  "s-dsharp": {}, "s-dsharplow": {}, "s-fsharp": {},
+  "s-fsharphigh": {}, "s-gsharp": {}
 };
 let allEvents = [];
 
@@ -143,7 +146,7 @@ const setupClock = () => {
 const setupClickHandlers = () => {
   //Nodes on the sequencer change color when clicked
   //They also either activate or deactive their respective events
-  $(".grid-node").mouseenter( (e) => {
+  $(".grid-node").click( (e) => {
     let $node = $(e.target);
     let nodeBeat = $node.data("beat");
     let nodeSound = $node.data("sound");
@@ -200,20 +203,9 @@ const changeTempo = (newTempo) => {
 };
 
 
-const nextBeatTime = (beat) => {
-  let currentTime = audioContext.currentTime;
-  let currentBar = Math.floor(currentTime / barTime);
-  let currentBeat = Math.round(currentTime % barTime);
-  if (currentBeat < beat) {
-    return currentBar * barTime + beat * beatTime;
-  } else {
-    return (currentBar + 1) * barTime + beat * beatTime;
-  }
-};
-
 const handlePlay = () => {
   clock.start();
-  //Starting the clock clears all prior events, so we reactivate here.
+  // Starting the clock clears all prior events, so we reactivate here.
   // BUT, it won't clear our array of events, so I do it manually:
   allEvents = [];
   activateNodes();
@@ -221,7 +213,7 @@ const handlePlay = () => {
 };
 
 const handlePause = () => {
-  clock.stop();
+  // clock.stop();
   deactivateNodes();
 };
 
@@ -259,6 +251,17 @@ const activateNode = (beat, sound) => {
   console.log(`allEvents: ${allEvents.length}`);
 };
 
+const nextBeatTime = (beat) => {
+  let currentTime = audioContext.currentTime;
+  let currentBar = Math.floor(currentTime / barTime);
+  let currentBeat = Math.round(currentTime % barTime);
+  if (currentBeat < beat) {
+    return currentBar * barTime + beat * beatTime;
+  } else {
+    return (currentBar + 1) * barTime + beat * beatTime;
+  }
+};
+
 const deactivateNode = (beat, sound) => {
   let event = beats[sound][beat];
   if (event) {
@@ -289,7 +292,7 @@ const loadDrumSound = (instrumentName) => {
       let createNode = function() {
         let source = audioContext.createBufferSource();
         source.buffer = audioBuffer;
-        source.connect(audioContext.destination);
+        source.connect(drumGainNode);
         return source;
       };
       buffers[instrumentName] = { createNode };
@@ -318,7 +321,7 @@ const loadSynthSound = (instrumentName) => {
       let createNode = function() {
         let source = audioContext.createBufferSource();
         source.buffer = audioBuffer;
-        source.connect(audioContext.destination);
+        source.connect(synthGainNode);
         return source;
       };
       buffers[instrumentName] = { createNode };
