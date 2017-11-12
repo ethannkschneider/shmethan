@@ -147,6 +147,8 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  max-width: 250px;
+  min-width: 250px;
 }
 
 #play-button {
@@ -155,7 +157,7 @@ main {
   background: #A1FFCE;
   background: -webkit-linear-gradient(to right, #FAFFD1, #A1FFCE);
   background: linear-gradient(to right, #FAFFD1, #A1FFCE);
-  border: 1px solid white;
+  border: 1px solid blue;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -196,7 +198,7 @@ main {
 }
 
 label {
-  width: 100%;
+  width: 250px;
 }
 
 #tempo-slider, #synth-gain-slider, #drum-gain-slider {
@@ -220,8 +222,12 @@ label {
     appearance: none;
     width: 25px; /* Set a specific slider handle width */
     height: 25px; /* Slider handle height */
-    background: #4CAF50; /* Green background */
     cursor: pointer; /* Cursor on hover */
+    border-radius: 50%;
+    background: #931936; /* Old browsers */
+    background: -moz-radial-gradient(center, ellipse cover, #931936 0%, #7d152d 44%, #5f0f22 100%); /* FF3.6-15 */
+    background: -webkit-radial-gradient(center, ellipse cover, #931936 0%,#7d152d 44%,#5f0f22 100%); /* Chrome10-25,Safari5.1-6 */
+    background: radial-gradient(ellipse at center, #931936 0%,#7d152d 44%,#5f0f22 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ /* Green background */
 }
 
 
