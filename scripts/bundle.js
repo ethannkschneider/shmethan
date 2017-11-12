@@ -318,7 +318,7 @@ const loadDrumSound = (instrumentName) => {
   const oReq = new XMLHttpRequest();
   // Make an ajax request to fetch the audio ('true' indicates async)
   // Can't use jQuery bc it doesn't support ArrayBuffer response types
-  oReq.open('GET', '../audio_files/' + instrumentName + ".mp3", true);
+  oReq.open('GET', 'https://raw.githubusercontent.com/ethannkschneider/ecto-drum/master/audio_files/' + instrumentName + ".mp3", true);
   oReq.responseType = 'arraybuffer';
   // Once the request is loaded, decode the arraybuffer into an audiobuffer
   // and pass it to the callback, which makes a createNode function to
@@ -345,7 +345,7 @@ const loadSynthSound = (instrumentName) => {
   const oReq = new XMLHttpRequest();
   // Make an ajax request to fetch the audio ('true' indicates async)
   // Can't use jQuery bc it doesn't support ArrayBuffer response types
-  oReq.open('GET', '../audio_files/' + instrumentName + ".mp3", true);
+  oReq.open('GET', 'https://raw.githubusercontent.com/ethannkschneider/ecto-drum/master/audio_files/' + instrumentName + ".mp3", true);
   oReq.responseType = 'arraybuffer';
   // Once the request is loaded, decode the arraybuffer into an audiobuffer
   // and pass it to the callback, which makes a createNode function to
