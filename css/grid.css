@@ -1,20 +1,39 @@
 /*BACKGROUND FOR APP*/
 
 body {
-  background-image: linear-gradient(to top, #fad0c4 0%, #ffd1ff 100%);
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  margin-top: 0;
 }
 
 /*HEADER STYLING*/
 
 nav {
-  /*background: #314755;
-  background: -webkit-linear-gradient(to top, #26a0da, #314755);
-  background: linear-gradient(to top, #26a0da, #314755);*/
-  height: 70px;
+  height: 100px;
   border-bottom: 3px solid black;
+  overflow: hidden;
+}
+
+.sliding-background {
+  height: 100%;
+  width: 100%;
+  background-size: fill;
+  background-image: url("../images/white-sky1.jpg");
+}
+
+@keyframes .slide {
+  0%{
+    transform: translate3d(0, 0, 0);
+  }
+  100%{
+    transform: translate3d(-1692px, 0, 0);
+  }
 }
 
 #app-title {
+  z-index: 1;
   text-align: center;
   color: #3F0D83;
   text-shadow:
@@ -23,6 +42,8 @@ nav {
   -1px 1px 0 #FAFAFA,
   1px 1px 0 #FAFAFA;
   font-family: 'Open Sans', sans-serif;
+  padding: 0;
+  margin: 0;
 }
 
 /*MAIN STYLING*/
@@ -66,13 +87,40 @@ main {
   height: 30px;
   width: 30px;
   border-radius: 50%;
-  background: #5F656A;
+  background: #615fcb; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #615fcb 0%, #1c12ae 50%, #5c48de 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #615fcb 0%,#1c12ae 50%,#5c48de 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #615fcb 0%,#1c12ae 50%,#5c48de 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   margin: 5px 15px;
   border: 2px solid whitesmoke;
 }
 
+.grid-node:hover {
+  background: #7a5fcb; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #7a5fcb 0%, #4112ae 50%, #7f48de 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #7a5fcb 0%,#4112ae 50%,#7f48de 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #7a5fcb 0%,#4112ae 50%,#7f48de 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  border: 2px solid #fdda2d;
+}
+
 .clicked-node {
-  background: radial-gradient(#F7B843, #F7DE43, #FFFF91);
+  background: #a9e4f7; /* Old browsers */
+  background: -moz-linear-gradient(45deg, #a9e4f7 0%, #0fb4e7 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(45deg, #a9e4f7 0%,#0fb4e7 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(45deg, #a9e4f7 0%,#0fb4e7 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  border: 2px solid whitesmoke;
+}
+
+.clicked-node:hover {
+  background: #b3dced; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #b3dced 0%, #29b8e5 50%, #bce0ee 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #b3dced 0%,#29b8e5 50%,#bce0ee 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #b3dced 0%,#29b8e5 50%,#bce0ee 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  border: 2px solid #d6f9ff;
+}
+
+.currently-playing {
+  border: 3px solid yellow;
 }
 
 /*RIGHT BUTTONS STYLING*/
@@ -95,6 +143,7 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 #play-button:hover {
