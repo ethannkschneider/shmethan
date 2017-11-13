@@ -71,7 +71,11 @@
 let audioContext;
 let drumGainNode;
 let synthGainNode;
-let oscillator;
+let instrumentGain;
+let dryGain;
+let wetGain;
+let compression;
+let delay;
 let clock;
 let isPlaying = false;
 let drumSounds = ["hh1", "kick1", "snare1"];
@@ -140,8 +144,27 @@ const setupAudioContext = () => {
   audioContext = new AudioContext();
   drumGainNode = audioContext.createGain();
   synthGainNode = audioContext.createGain();
-  drumGainNode.connect(audioContext.destination);
-  synthGainNode.connect(audioContext.destination);
+  instrumentGain = audioContext.createGain();
+  dryGain = audioContext.createGain();
+  wetGain = audioContext.createGain();
+  drumGainNode.connect(instrumentGain);
+  synthGainNode.connect(instrumentGain);
+  instrumentGain.connect(dryGain);
+  instrumentGain.connect(wetGain);
+  dryGain.gain.value = 1;
+  dryGain.connect(audioContext.destination);
+  // ADD WET EFFECTS //
+  compression = audioContext.createDynamicsCompressor();
+  compression.threshold.value = -50;
+  compression.knee.value = 40;
+  compression.ratio.value = 0.1;
+  compression.release.value = 0.25;
+  delay = audioContext.createDelay(5.0);
+  wetGain.gain.value = 0;
+  wetGain.connect(compression);
+  compression.connect(delay);
+  delay.connect(audioContext.destination);
+
 };
 
 const handlePlay = (e) => {
@@ -305,6 +328,15 @@ const setupSlideHandlers = () => {
     let val = $synthGainSlider.val();
     $synthGainLabel.text(val/10);
     synthGainNode.gain.value = val / 110;
+  });
+
+  const $magicSlideLabel = $("#magic-value");
+  const $magicSlider = $("#magic-slider");
+  $magicSlider.on("input", () => {
+    let val = $magicSlider.val();
+    $magicSlideLabel.text(val);
+    wetGain.gain.value = val;
+    dryGain.gain.value = 1 - val;
   });
 };
 

@@ -1,32 +1,59 @@
 /*BACKGROUND FOR APP*/
 
 body {
-  background: #ffffff; /* Old browsers */
-  background: -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  margin-top: 0;
+  background: rgb(255,255,255); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 27%, rgba(252,201,201,1) 55%, rgba(252,201,201,1) 65%, rgba(232,183,255,1) 81%, rgba(232,183,255,1) 81%, rgba(142,112,181,1) 92%, rgba(36,150,226,1) 98%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,1) 27%,rgba(252,201,201,1) 55%,rgba(252,201,201,1) 65%,rgba(232,183,255,1) 81%,rgba(232,183,255,1) 81%,rgba(142,112,181,1) 92%,rgba(36,150,226,1) 98%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(255,255,255,1) 27%,rgba(252,201,201,1) 55%,rgba(252,201,201,1) 65%,rgba(232,183,255,1) 81%,rgba(232,183,255,1) 81%,rgba(142,112,181,1) 92%,rgba(36,150,226,1) 98%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  margin: 0;
 }
 
 /*HEADER STYLING*/
 
 nav {
   height: 100px;
-  border-bottom: 3px solid black;
-  overflow: hidden;
+  border-bottom: 10px solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-image: url(../images/purplewatercolorcraftberrybush.jpg);
+  background-size: contain;
 }
 
-.sliding-background {
-  height: 100%;
-  width: 100%;
-  background-size: fill;
-  background-image: url("../images/white-sky1.jpg");
+.author {
+  text-align: center;
+  margin-left: 10px;
+  color: #3F0D83;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  text-shadow:
+  -1px -1px 0 #FAFAFA,
+  1px -1px 0 #FAFAFA,
+  -1px 1px 0 #FAFAFA,
+  1px 1px 0 #FAFAFA;
+}
+
+.header {
+
+}
+
+.icons {
+  list-style: none;
+}
+.icons li {
+  font-size: 35px;
+  margin: 0 15px;
+  text-shadow:
+  -1px -1px 0 #FAFAFA,
+  1px -1px 0 #FAFAFA,
+  -1px 1px 0 #FAFAFA,
+  1px 1px 0 #FAFAFA;
 }
 
 #app-title {
   z-index: 1;
   text-align: center;
-  color: #3F0D83;
+  color: black;
   text-shadow:
   -1px -1px 0 #FAFAFA,
   1px -1px 0 #FAFAFA,
@@ -35,12 +62,17 @@ nav {
   font-family: 'Open Sans', sans-serif;
   padding: 0;
   margin: 0;
+  font-size: 30px;
+}
+
+.icons {
+  display: flex;
 }
 
 /*MAIN STYLING*/
 
 main {
-  margin: 100px auto;
+  margin: 50px auto;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -60,7 +92,9 @@ main {
 }
 .instrument-label {
   font-family: 'Open Sans', sans-serif;
-  color: #063D6A;
+  text-align: center;
+  color: #3F0D83;
+  font-weight: bold;
   margin-right: 50px;
 }
 
@@ -154,10 +188,11 @@ main {
 #play-button {
   height: 50px;
   width: 50px;
-  background: #A1FFCE;
-  background: -webkit-linear-gradient(to right, #FAFFD1, #A1FFCE);
-  background: linear-gradient(to right, #FAFFD1, #A1FFCE);
-  border: 1px solid blue;
+  background: #90cf6b; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #90cf6b 0%, #70c240 17%, #579931 33%, #286c00 67%, #194400 83%, #0a1c00 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #90cf6b 0%,#70c240 17%,#579931 33%,#286c00 67%,#194400 83%,#0a1c00 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #90cf6b 0%,#70c240 17%,#579931 33%,#286c00 67%,#194400 83%,#0a1c00 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  border: 5px solid black;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -166,26 +201,22 @@ main {
 }
 
 #play-button:hover {
-  background: #000428;
-  background: -webkit-linear-gradient(to right, #000428, #004e92);
-  background: linear-gradient(to right, #000428, #004e92);
+  background: #c6290e; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #c6290e 0%, #941d08 50%, #731401 51%, #7e3200 75%, #621000 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #c6290e 0%,#941d08 50%,#731401 51%,#7e3200 75%,#621000 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #c6290e 0%,#941d08 50%,#731401 51%,#7e3200 75%,#621000 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }
 
 #play-button i {
   display: block;
-  text-shadow:
-  -1px -1px 10px #7966A0,
-  1px -1px 10px #7966A0,
-  -1px 1px 10px #7966A0,
-  1px 1px 10px #7966A0;
 }
 
 #pause {
-  color: #E45642;
+  color: red;
 }
 
 #play {
-  color: #6EEE5A;
+  color: black;
 }
 
 /*EFFECTS SLIDERS STYLING*/
@@ -193,15 +224,19 @@ main {
 .sliders {
   width: 100%;
 }
-#tempo-slide-container, #synth-gain-container, #drum-gain-container {
+#tempo-slide-container, #synth-gain-container, #drum-gain-container, #magic-slide-container {
   width: 100%;
 }
 
 label {
   width: 250px;
+  font-family: 'Open Sans', sans-serif;
+  text-align: center;
+  color: #3F0D83;
+  font-weight: bold;
 }
 
-#tempo-slider, #synth-gain-slider, #drum-gain-slider {
+#tempo-slider, #synth-gain-slider, #drum-gain-slider, #magic-slider {
   -webkit-appearance: none;  /* Override default CSS styles */
     appearance: none;
     width: 100%; /* Full-width */
@@ -211,13 +246,14 @@ label {
     opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
     -webkit-transition: .2s; /* 0.2 seconds transition on hover */
     transition: opacity .2s;
+    border: 3px solid black;
 }
 
-#tempo-slider:hover, #drum-gain-slider:hover, #synth-gain-slider:hover {
+#tempo-slider:hover, #drum-gain-slider:hover, #synth-gain-slider:hover, #magic-slider:hover {
     opacity: 1; /* Fully shown on mouse-over */
 }
 
-#tempo-slider::-webkit-slider-thumb, #drum-gain-slider::-webkit-slider-thumb, #synth-gain-slider::-webkit-slider-thumb {
+#tempo-slider::-webkit-slider-thumb, #drum-gain-slider::-webkit-slider-thumb, #synth-gain-slider::-webkit-slider-thumb, #magic-slider::-webkit-slider-thumb {
     -webkit-appearance: none; /* Override default look */
     appearance: none;
     width: 25px; /* Set a specific slider handle width */
