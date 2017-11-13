@@ -247,6 +247,63 @@ const setupClickHandlers = () => {
       $modal.css("display", "none");
     }
   });
+
+  // Set up demo buttons
+  let $kickDemo = $("#kick-demo");
+  let $snareDemo = $("#snare-demo");
+  let $hhDemo = $("#hh-demo");
+  let $lowFive = $("#low-five-demo");
+  let $lowSix = $("#low-six-demo");
+  let $oneDemo = $("#one-demo");
+  let $twoDemo = $("#two-demo");
+  let $threeDemo = $("#three-demo");
+  let $fiveDemo = $("#five-demo");
+  let $sixDemo = $("#six-demo");
+  let $eightDemo = $("#eight-demo");
+
+  $kickDemo.click( (e) => {
+    buffers["kick1"].createNode().start(audioContext.currentTime);
+  });
+
+  $snareDemo.click( (e) => {
+    buffers["snare1"].createNode().start(audioContext.currentTime);
+  });
+
+  $hhDemo.click( (e) => {
+    buffers["hh1"].createNode().start(audioContext.currentTime);
+  });
+
+  $lowFive.click( (e) => {
+    buffers["s-csharplow"].createNode().start(audioContext.currentTime);
+  });
+
+  $lowSix.click( (e) => {
+    buffers["s-dsharplow"].createNode().start(audioContext.currentTime);
+  });
+
+  $oneDemo.click( (e) => {
+    buffers["s-fsharp"].createNode().start(audioContext.currentTime);
+  });
+
+  $twoDemo.click( (e) => {
+    buffers["s-gsharp"].createNode().start(audioContext.currentTime);
+  });
+
+  $threeDemo.click( (e) => {
+    buffers["s-asharp"].createNode().start(audioContext.currentTime);
+  });
+
+  $fiveDemo.click( (e) => {
+    buffers["s-csharp"].createNode().start(audioContext.currentTime);
+  });
+
+  $sixDemo.click( (e) => {
+    buffers["s-dsharp"].createNode().start(audioContext.currentTime);
+  });
+
+  $eightDemo.click( (e) => {
+    buffers["s-fsharphigh"].createNode().start(audioContext.currentTime);
+  });
 };
 
 // Schedule the node to play its sound on the given beat

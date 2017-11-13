@@ -1,6 +1,9 @@
 /*Gradients generated using: http://www.colorzilla.com/gradient-editor/*/
 
 /*BACKGROUND FOR APP*/
+html, body {
+  height: 100%;
+}
 
 body {
   background: rgb(255,255,255); /* Old browsers */
@@ -91,8 +94,9 @@ nav {
   margin-top: 10px;
 
 }
-.header {
-
+#personal-site {
+  text-decoration: none;
+  font-size: 24px;
 }
 
 .icons {
@@ -153,6 +157,25 @@ main {
   color: #3F0D83;
   font-weight: bold;
   margin-right: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.demo {
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid #93EF81;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+.demo:hover {
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid #931936;
 }
 
 .grid-container {
