@@ -74,6 +74,7 @@ let synthGainNode;
 let instrumentGain;
 let dryGain;
 let wetGain;
+let feedback;
 let compression;
 let delay;
 let clock;
@@ -96,11 +97,12 @@ let beats = {
 let allEvents = [];
 let uiEvent;
 let startTime;
-// START BETA VARS //
 let rhythmIndex = 1;
 let noteTime = 0.0;
 let timerWorker = null;
 let prevAnimTime = -1;
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
   setupAudioContext();
@@ -124,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
   //END TEST//
 });
 
+// timerWorker citation: https://github.com/cwilso/MIDIDrums
 const startWorker = () => {
   let timerWorkerBlob = new Blob([
     "let timeoutID=0;function schedule(){timeoutID=setTimeout(function(){postMessage('schedule'); schedule();},100);} onmessage = function(e) { if (e.data == 'start') { if (!timeoutID) schedule();} else if (e.data == 'stop') {if (timeoutID) clearTimeout(timeoutID); timeoutID=0;};}"
@@ -152,19 +155,19 @@ const setupAudioContext = () => {
   instrumentGain.connect(dryGain);
   instrumentGain.connect(wetGain);
   dryGain.gain.value = 1;
-  dryGain.connect(audioContext.destination);
-  // ADD WET EFFECTS //
-  compression = audioContext.createDynamicsCompressor();
-  compression.threshold.value = -50;
-  compression.knee.value = 40;
-  compression.ratio.value = 0.1;
-  compression.release.value = 0.25;
-  delay = audioContext.createDelay(5.0);
   wetGain.gain.value = 0;
+  // ADD EFFECTS
+  dryGain.connect(audioContext.destination);
+  compression = audioContext.createDynamicsCompressor();
+  feedback = audioContext.createGain();
+  feedback.gain.value = 0.19;
+  delay = audioContext.createDelay();
+  delay.delayTime.value = 0.08;
   wetGain.connect(compression);
   compression.connect(delay);
+  delay.connect(feedback);
+  feedback.connect(delay);
   delay.connect(audioContext.destination);
-
 };
 
 const handlePlay = (e) => {
@@ -335,15 +338,14 @@ const setupSlideHandlers = () => {
   $magicSlider.on("input", () => {
     let val = $magicSlider.val();
     $magicSlideLabel.text(val);
-    wetGain.gain.value = val;
-    dryGain.gain.value = 1 - val;
+    wetGain.gain.value = val/2;
+    dryGain.gain.value = 1 - val/2;
   });
 };
 
 const changeTempo = (newTempo) => {
   tempo = newTempo;
 };
-
 
 //Load the drum sounds and connect them to drum node
 const loadDrumSound = (instrumentName) => {
