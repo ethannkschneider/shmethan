@@ -10,12 +10,14 @@ let compression;
 let delay;
 let clock;
 let isPlaying = false;
+//store the file names of sounds to be used
 let drumSounds = ["hh1", "kick1", "snare1"];
 let synthSounds = [
   "s-asharp", "s-csharp", "s-csharplow",
   "s-dsharp", "s-dsharplow", "s-fsharp",
   "s-fsharphigh", "s-gsharp"
 ];
+//eventually we will store the decoded files in the buffers object
 let buffers = {};
 let tempo = 60;
 let totalBeats = 16;
@@ -30,6 +32,7 @@ let uiEvent;
 let startTime;
 let rhythmIndex = 1;
 let noteTime = 0.0;
+// See https://github.com/cwilso/MIDIDrums for timerWorker info
 let timerWorker = null;
 let prevAnimTime = -1;
 
@@ -50,14 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   startWorker();
 
-  //START TEST//
-  window.beats = beats;
-  // window.buffers = buffers;
-  window.isPlaying = isPlaying;
-  //END TEST//
 });
 
 // timerWorker citation: https://github.com/cwilso/MIDIDrums
+// Chris Wilson is the WAA scheduling guru
+// we are using worker to call schedule()
 const startWorker = () => {
   let timerWorkerBlob = new Blob([
     "let timeoutID=0;function schedule(){timeoutID=setTimeout(function(){postMessage('schedule'); schedule();},100);} onmessage = function(e) { if (e.data == 'start') { if (!timeoutID) schedule();} else if (e.data == 'stop') {if (timeoutID) clearTimeout(timeoutID); timeoutID=0;};}"
@@ -123,6 +123,7 @@ const playNote = (sound, time) => {
 const schedule = () => {
   let currentTime = audioContext.currentTime;
   // The sequence starts at startTime, so normalize currentTime so that it's 0 at the start of the sequence.
+  // See: https://www.html5rocks.com/en/tutorials/audio/scheduling/
   currentTime -= startTime;
   while (noteTime < currentTime + 0.120) {
     // Convert noteTime to context time.
@@ -140,7 +141,6 @@ const schedule = () => {
 
     // Hihat
     if (beats["hh1"][rhythmIndex]) {
-        // Pan the hihat according to sequence position.
         playNote("hh1", contextPlayTime);
     }
 
@@ -177,17 +177,19 @@ const schedule = () => {
         playNote("s-gsharp", contextPlayTime);
     }
 
-
+    // Light up the current beat
     if (noteTime !== prevAnimTime) {
         prevAnimTime = noteTime;
         animateUi((rhythmIndex + 15) % 16 + 1);
     }
 
+    //Increase current beat by one
     nextNote();
   }
 };
 
 const animateUi = (beat) => {
+// Beats are 1 through 16, so, we do a bit of weird modding to get prevBeat
   let prevBeat = (beat + 14) % 16 + 1;
 
   $(`#light-${beat}`).addClass("currently-playing");
@@ -227,6 +229,7 @@ const setupClickHandlers = () => {
   });
 
   // Modal
+  // See: https://www.w3schools.com/howto/howto_css_modals.asp
   let $modal = $("#modal");
   let $modalButton = $("#modal-button");
   let $span = $(".close");
@@ -247,6 +250,7 @@ const setupClickHandlers = () => {
 };
 
 // Schedule the node to play its sound on the given beat
+// Info about which notes are/should be scheduled is stored in beats
 const activateNode = (beat, sound) => {
   beats[sound][beat] = true;
 };
@@ -256,8 +260,10 @@ const deactivateNode = (beat, sound) => {
 };
 
 const setupSlideHandlers = () => {
-  // Display tempo upon slider value change
-  // Also call changeTempo to timeStretch scheduled events
+  // Display tempo upon slider value change and call changeTempo
+  // The numbers that val is divided by are just accounting for
+  // 1) what makes sense to display to user and 2) making sure changeTempo
+  // functions smoothly
   const $tempoLabel = $("#tempo-value");
   const $tempoSlider = $("#tempo-slider");
   $tempoSlider.on("input change", () => {
@@ -283,6 +289,7 @@ const setupSlideHandlers = () => {
     synthGainNode.gain.value = val / 110;
   });
 
+  // Add magic sauce (basically slap-back delay, feedback, and compression)
   const $magicSlideLabel = $("#magic-value");
   const $magicSlider = $("#magic-slider");
   $magicSlider.on("input", () => {
@@ -293,15 +300,18 @@ const setupSlideHandlers = () => {
   });
 };
 
+// Since the scheduling function uses 'tempo' to schedule notes,
+// all we need to do here is set tempo to newTempo
 const changeTempo = (newTempo) => {
   tempo = newTempo;
 };
 
-//Load the drum sounds and connect them to drum node
+// Load the drum sounds and connect them to drum node
+// See examples at https://github.com/sebpiq/WAAClock for reference
 const loadDrumSound = (instrumentName) => {
   const oReq = new XMLHttpRequest();
   // Make an ajax request to fetch the audio ('true' indicates async)
-  // Can't use jQuery bc it doesn't support ArrayBuffer response types
+  // Can't use jQuery here bc it doesn't support ArrayBuffer response types
   oReq.open('GET', 'https://raw.githubusercontent.com/ethannkschneider/ecto-drum/master/audio_files/' + instrumentName + ".mp3", true);
   oReq.responseType = 'arraybuffer';
   // Once the request is loaded, decode the arraybuffer into an audiobuffer
@@ -325,17 +335,12 @@ const loadDrumSound = (instrumentName) => {
   oReq.send();
 };
 
+// Similar to above
 const loadSynthSound = (instrumentName) => {
   const oReq = new XMLHttpRequest();
-  // Make an ajax request to fetch the audio ('true' indicates async)
-  // Can't use jQuery bc it doesn't support ArrayBuffer response types
   oReq.open('GET', 'https://raw.githubusercontent.com/ethannkschneider/ecto-drum/master/audio_files/' + instrumentName + ".mp3", true);
   oReq.responseType = 'arraybuffer';
-  // Once the request is loaded, decode the arraybuffer into an audiobuffer
-  // and pass it to the callback, which makes a createNode function to
-  // connect a bufferSource to the final destination of audioContext.
-  // We then store that particular createNode function in the buffers array
-  // so we can access it later.
+
   oReq.onload = () => {
     audioContext.decodeAudioData(oReq.response, (audioBuffer) => {
       let createNode = function() {
@@ -348,7 +353,6 @@ const loadSynthSound = (instrumentName) => {
     });
   };
 
-  // Actually send the request
   oReq.send();
 };
 

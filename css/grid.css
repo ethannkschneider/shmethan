@@ -1,3 +1,5 @@
+/*Gradients generated using: http://www.colorzilla.com/gradient-editor/*/
+
 /*BACKGROUND FOR APP*/
 
 body {
@@ -10,6 +12,7 @@ body {
 
 /*MODAL STYLING*/
 /* The Modal (background) */
+/*See https://www.w3schools.com/howto/howto_css_modals.asp*/
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -131,7 +134,6 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  /*border: 1px solid blue;*/
   background: transparent;
 }
 
@@ -166,7 +168,6 @@ main {
 .grid-node {
   height: 30px;
   width: 30px;
-  /*border-radius: 90%;*/
   background: #615fcb; /* Old browsers */
   background: -moz-linear-gradient(-45deg, #615fcb 0%, #1c12ae 50%, #5c48de 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(-45deg, #615fcb 0%,#1c12ae 50%,#5c48de 100%); /* Chrome10-25,Safari5.1-6 */
@@ -275,6 +276,7 @@ main {
 }
 
 /*EFFECTS SLIDERS STYLING*/
+/*See https://www.w3schools.com/howto/howto_js_rangeslider.asp*/
 
 .sliders {
   width: 100%;
