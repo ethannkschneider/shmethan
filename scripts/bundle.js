@@ -294,6 +294,25 @@ const setupClickHandlers = () => {
     // if the audio is paused or not playing, play it!
     isPlaying ? handlePlay() : handlePause();
   });
+
+  // Modal
+  let $modal = $("#modal");
+  let $modalButton = $("#modal-button");
+  let $span = $(".close");
+
+  $modalButton.click( (e) => {
+    $modal.css("display", "block");
+  });
+
+  $span.click( (e) => {
+    $modal.css("display", "none");
+  });
+
+  $(window).click( (e) => {
+    if (e.target == $modal[0]) {
+      $modal.css("display", "none");
+    }
+  });
 };
 
 // Schedule the node to play its sound on the given beat
