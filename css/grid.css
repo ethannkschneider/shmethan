@@ -17,7 +17,7 @@ body {
 /* The Modal (background) */
 /*See https://www.w3schools.com/howto/howto_css_modals.asp*/
 .modal {
-    display: none; /* Hidden by default */
+    display: block; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 9999; /* Sit on top */
     left: 0;
