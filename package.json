@@ -4,11 +4,13 @@
   "description": "Ecto-Drum is a web-based drum machine that allows users to create custom beats and download them as .wav files.   [Here is an example of the concept] (http://www.html5drummachine.com/)",
   "main": "index.js",
   "dependencies": {
+    "browserify": "^14.5.0",
     "jquery": "^3.2.1",
     "jquery.ripples": "^0.6.1",
     "tone": "^0.11.11",
     "waaclock": "^0.5.3",
-    "webpack": "^3.8.1"
+    "webpack": "^3.8.1",
+    "workerify": "^1.1.0"
   },
   "devDependencies": {},
   "scripts": {

@@ -111,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupAudioContext();
   setupClickHandlers();
   setupSlideHandlers();
+  // setupRecorder();
 
   drumSounds.forEach( (sound) => {
     loadDrumSound(sound);
@@ -431,6 +432,53 @@ const setupSlideHandlers = () => {
 const changeTempo = (newTempo) => {
   tempo = newTempo;
 };
+
+
+// const setupRecorder = () => {
+//   const streamDest = audioContext.createMediaStreamDestination();
+//   const mediaRecord = new MediaRecorder(streamDest.stream);
+//   //Set up buttons
+//   lastNode.connect(streamDest);
+//
+//   recordButton.addEventListener("click", (e) => {
+//     //if !clicked
+//       // chunks = []
+//       // mediaRecord.start();
+//       // clicked = true;
+//     // else
+//       // mediaRecord.requestData();
+//       // mediaRecord.stop();
+//       // clicked = false
+//   });
+//
+//   mediaRecord.ondataavailable = (e) => {
+//     // chunks.push(e.data);
+//   };
+//
+//   mediaRecord.onstop = (e) => {
+//     // const blob = new Blob(chunks, {'type':'audio/ogg; codecs=opus'});
+//     // Make sure to create an audio tag in the html file
+//     // $('audio').src = URL.createObjectURL(blob);
+//     // downloadButton.disabled = false;
+//     // // make it active
+//   };
+//
+//   // downloadButton.addEventListener("click", (e) => {
+//     // let blob2 = new Blob(chunks, {"type": "audio/ogg; codec=opus"});
+//     // let url2 = window.URL.createObjectURL(blob2);
+//     const a = document.createElement("a");
+//     // a.style.display = 'none';
+//     // a.href = url2;
+//     // a.download = 'new_recording.ogg';
+//     // document.body.appendChild(a);
+//     // a.click();
+//     // setTimeout(() => {
+//     //   document.body.removeChild(a);
+//     //   window.URL.revokeObjectURL(url);
+//     // }, 100);
+//
+//   // });
+// };
 
 // Load the drum sounds and connect them to drum node
 // See examples at https://github.com/sebpiq/WAAClock for reference
