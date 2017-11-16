@@ -348,9 +348,47 @@ label {
 
 /*DOWNLOAD BUTTONS */
 
-/*#record-button {
-  background-image:
-}*/
+@keyframes blinker {
+  50% { opacity: 0; }
+}
 
+.download-buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 7px;
+}
+
+#record-button, #download-button {
+  height: 30px;
+  width: 30px;
+  padding: 10px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+#record-button:hover, #download-button:hover {
+  opacity: 0.5;
+}
+
+
+#record-button {
+  background-image: url(../images/record-button.png);
+}
+
+#record-button.recording, #record-button.recording:hover {
+  animation: blinker 0.5s linear infinite;
+}
+
+#download-button {
+  background-image: url(../images/download-button.png);
+}
+
+.audio-player {
+  margin-top: 15px;
+  width: 100%;
+}
 
 /*end of document*/

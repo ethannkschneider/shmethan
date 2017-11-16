@@ -8,6 +8,7 @@ let wetGain;
 let feedback;
 let compression;
 let delay;
+let finalGainNode;
 let clock;
 let isPlaying = false;
 //store the file names of sounds to be used
@@ -35,6 +36,8 @@ let noteTime = 0.0;
 // See https://github.com/cwilso/MIDIDrums for timerWorker info
 let timerWorker = null;
 let prevAnimTime = -1;
+let chunks; // we will store audio data here when recording
+let numDownloads = 0; // We will use this to increment the names of downloaded files
 
 
 
@@ -42,7 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
   setupAudioContext();
   setupClickHandlers();
   setupSlideHandlers();
-  // setupRecorder();
+  setupRecorder();
+  setupKeypressHandlers();
 
   drumSounds.forEach( (sound) => {
     loadDrumSound(sound);
@@ -57,8 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // timerWorker citation: https://github.com/cwilso/MIDIDrums
-// Chris Wilson is the WAA scheduling guru
-// we are using worker to call schedule()
+// Chris Wilson is the WAA scheduling guru.
+// we are using worker to call schedule() at set intervals in the 'background'.
 const startWorker = () => {
   let timerWorkerBlob = new Blob([
     "let timeoutID=0;function schedule(){timeoutID=setTimeout(function(){postMessage('schedule'); schedule();},100);} onmessage = function(e) { if (e.data == 'start') { if (!timeoutID) schedule();} else if (e.data == 'stop') {if (timeoutID) clearTimeout(timeoutID); timeoutID=0;};}"
@@ -82,14 +86,20 @@ const setupAudioContext = () => {
   instrumentGain = audioContext.createGain();
   dryGain = audioContext.createGain();
   wetGain = audioContext.createGain();
+  finalGainNode = audioContext.createGain();
+  drumGainNode.gain.value = (5 / 11); // initialize gains; since we go up to 11, we start at 5 /11
+  synthGainNode.gain.value = (5 / 11);
+  finalGainNode.gain.value = 0.9; // attempt to control for clipping (check this)
+  dryGain.gain.value = 1;
+  wetGain.gain.value = 0;
   drumGainNode.connect(instrumentGain);
   synthGainNode.connect(instrumentGain);
   instrumentGain.connect(dryGain);
   instrumentGain.connect(wetGain);
-  dryGain.gain.value = 1;
-  wetGain.gain.value = 0;
+  //connect dry gain to the final node before the dest
+  //we have this node so that we can connect to our media stream for recording
+  dryGain.connect(finalGainNode);
   // ADD EFFECTS
-  dryGain.connect(audioContext.destination);
   compression = audioContext.createDynamicsCompressor();
   feedback = audioContext.createGain();
   feedback.gain.value = 0.19;
@@ -99,7 +109,10 @@ const setupAudioContext = () => {
   compression.connect(delay);
   delay.connect(feedback);
   feedback.connect(delay);
-  delay.connect(audioContext.destination);
+  //connect final node in wet chain (delay) to finalGainNode
+  delay.connect(finalGainNode);
+  //connect finalGainNode to our destination (speakers)
+  finalGainNode.connect(audioContext.destination);
 };
 
 const handlePlay = (e) => {
@@ -307,6 +320,15 @@ const setupClickHandlers = () => {
   });
 };
 
+const setupKeypressHandlers = () => {
+  $(window).keypress((e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+      $("#play-button").click();
+    }
+  });
+};
+
 // Schedule the node to play its sound on the given beat
 // Info about which notes are/should be scheduled is stored in beats
 const activateNode = (beat, sound) => {
@@ -364,52 +386,55 @@ const changeTempo = (newTempo) => {
   tempo = newTempo;
 };
 
+// See the MDN docs
+const setupRecorder = () => {
+  const streamDest = audioContext.createMediaStreamDestination();
+  const mediaRecorder = new MediaRecorder(streamDest.stream);
+  const $recordButton = $("#record-button");
+  const $downloadButton = $("#download-button");
+  finalGainNode.connect(streamDest);
 
-// const setupRecorder = () => {
-//   const streamDest = audioContext.createMediaStreamDestination();
-//   const mediaRecord = new MediaRecorder(streamDest.stream);
-//   //Set up buttons
-//   lastNode.connect(streamDest);
-//
-//   recordButton.addEventListener("click", (e) => {
-//     //if !clicked
-//       // chunks = []
-//       // mediaRecord.start();
-//       // clicked = true;
-//     // else
-//       // mediaRecord.requestData();
-//       // mediaRecord.stop();
-//       // clicked = false
-//   });
-//
-//   mediaRecord.ondataavailable = (e) => {
-//     // chunks.push(e.data);
-//   };
-//
-//   mediaRecord.onstop = (e) => {
-//     // const blob = new Blob(chunks, {'type':'audio/ogg; codecs=opus'});
-//     // Make sure to create an audio tag in the html file
-//     // $('audio').src = URL.createObjectURL(blob);
-//     // downloadButton.disabled = false;
-//     // // make it active
-//   };
-//
-//   // downloadButton.addEventListener("click", (e) => {
-//     // let blob2 = new Blob(chunks, {"type": "audio/ogg; codec=opus"});
-//     // let url2 = window.URL.createObjectURL(blob2);
-//     const a = document.createElement("a");
-//     // a.style.display = 'none';
-//     // a.href = url2;
-//     // a.download = 'new_recording.ogg';
-//     // document.body.appendChild(a);
-//     // a.click();
-//     // setTimeout(() => {
-//     //   document.body.removeChild(a);
-//     //   window.URL.revokeObjectURL(url);
-//     // }, 100);
-//
-//   // });
-// };
+  $recordButton.click((e) => {
+    if (!$recordButton.hasClass("recording")) {
+
+      chunks = [];
+      mediaRecorder.start();
+      $recordButton.addClass("recording");
+    } else {
+      mediaRecorder.requestData();
+      mediaRecorder.stop();
+      $recordButton.removeClass("recording");
+    }
+  });
+
+  mediaRecorder.ondataavailable = (e) => {
+    chunks.push(e.data);
+  };
+
+  mediaRecorder.onstop = (e) => {
+    const blob = new Blob(chunks, {'type':'audio/ogg; codecs=opus'});
+    const $audio = $('#audio');
+    $audio.attr("src", URL.createObjectURL(blob));
+
+  };
+
+  $downloadButton.click((e) => {
+    numDownloads++; // Increment numDownloads to change the mp3 file name
+    const blob = new Blob(chunks, {"type": "audio/ogg; codec=opus"});
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a"); // could do with jquery too
+    a.style.display = 'none';
+    a.href = url;
+    a.download = 'shmethan' + (numDownloads < 10 ? '0' : '') + `${numDownloads}` + '.ogg';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 100);
+
+  });
+};
 
 // Load the drum sounds and connect them to drum node
 // See examples at https://github.com/sebpiq/WAAClock for reference
