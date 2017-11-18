@@ -107,7 +107,8 @@ let timerWorker = null;
 let prevAnimTime = -1;
 let chunks; // we will store audio data here when recording
 let numDownloads = 0; // We will use this to increment the names of downloaded files
-
+let demoBeatOne = [];
+let demoBeatTwo = [];
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -299,6 +300,23 @@ const setupClickHandlers = () => {
     $node.toggleClass("clicked-node");
     $node.hasClass("clicked-node") ?
       activateNode(nodeBeat, nodeSound) : deactivateNode(nodeBeat, nodeSound);
+  });
+
+  //RESET and DEMO BEAT buttons
+  $("#reset").click( (e) => {
+    let $clickedNodes = $(".clicked-node");
+    $clickedNodes.click();
+  });
+  // I added specific classes to nodes that are in demo beats
+  // First reset, the board, then click demo nodes
+  $("#demo1").click( (e) => {
+    $("#reset").click();
+    $(".demo-beat-one").click();
+  });
+
+  $("#demo2").click( (e) => {
+    $("#reset").click();
+    $(".demo-beat-two").click();
   });
 
   //Start with the pause icon hidden and then toggle on click

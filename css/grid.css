@@ -74,7 +74,7 @@ nav {
 .author {
   text-align: center;
   margin-left: 10px;
-  color: #3F0D83;
+  color: #615fcb;
   font-family: 'Open Sans', sans-serif;
   font-size: 15px;
   text-shadow:
@@ -92,8 +92,23 @@ nav {
 .author h3 {
   font-size: 12px;
   margin-top: 10px;
-
 }
+
+.links .icons li a:link {
+  color: #615fcb;
+}
+
+.links .icons li a:visited {
+  color: #615fcb;
+}
+.links .icons li a:hover {
+  color: #615fcb;
+  opacity: 0.8;
+}
+.links .icons li a:active {
+  color: #a9e4f7;
+}
+
 #personal-site {
   text-decoration: none;
   font-size: 24px;
@@ -125,6 +140,8 @@ nav {
   padding: 0;
   margin: 0;
   font-size: 30px;
+
+
 }
 
 .icons {
@@ -262,6 +279,49 @@ main {
   justify-content: space-between;
   max-width: 250px;
   min-width: 250px;
+}
+
+#demo-reset-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 7px;
+  cursor: pointer;
+}
+
+.demo-button, #reset {
+  height: 25px;
+  width: 25%;
+  border-radius: 5px;
+  color: white;
+  border: 3px solid rgba(0, 0, 0, 0.8);
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px;
+  line-height: 23px;
+}
+
+#demo1 {
+  background: #D38312;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #A83279, #D38312);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #A83279, #D38312); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#demo2 {
+  background: #4568DC;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #B06AB3, #4568DC);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #B06AB3, #4568DC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#reset {
+  background: #6441A5;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #2a0845, #6441A5);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #2a0845, #6441A5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.demo-button:hover, #reset:hover {
+  opacity: 0.7;
 }
 
 #play-button {
