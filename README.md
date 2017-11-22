@@ -1,5 +1,5 @@
 # Shmethan: The Mystical Audio Sequencer
-[Live Demo](https://ethannkschneider.github.io/ecto-drum/)  
+[Live Demo](http://ethannkschneider.me/shmethan/)  
 
 
 Shmethan is an audio sequencer built using the basic Web Audio Api, JavaScript, jQuery, HTML, and CSS. Users can click on purple squares to create drum and synth patterns. Clicking on the green circle will start the beat, and clicking again will stop it. You can edit the beat while it's playing, too. Sliders on the bottom right control the beat's tempo, the volumes of the drum and synth samples, and a simple audio effect called 'Magic Sauce' (slap-back delay, feedback, and compression).
