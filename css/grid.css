@@ -2,7 +2,7 @@
 
 /*BACKGROUND FOR APP*/
 html, body {
-  height: 100%;
+  height: 100vh;
 }
 
 body {
@@ -453,6 +453,25 @@ label {
 
 #audio {
   width: 100%;
+}
+
+/*DESCRIPTIONS*/
+
+.description {
+  width: 100%;
+  height: 40px;
+  font-size: 14px;
+  font-family: sans-serif;
+  margin-top: 7px;
+  line-height: 16px;
+  font-style: italic;
+}
+.hidden {
+  display: none;
+}
+
+.show-desc {
+  display: block;
 }
 
 /*end of document*/

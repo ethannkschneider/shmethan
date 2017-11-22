@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupSlideHandlers();
   setupRecorder();
   setupKeypressHandlers();
+  setupHoverHandlers();
 
   drumSounds.forEach( (sound) => {
     loadDrumSound(sound);
@@ -344,6 +345,20 @@ const setupKeypressHandlers = () => {
       e.preventDefault();
       $("#play-button").click();
     }
+  });
+};
+
+const setupHoverHandlers = () => {
+  $("#record-button").hover( () => {
+    $(".record-desc").toggleClass("show-desc");
+  });
+
+  $("#download-button").hover( () => {
+    $(".download-desc").toggleClass("show-desc");
+  });
+
+  $("#audio").hover( () => {
+    $(".playback-desc").toggleClass("show-desc");
   });
 };
 
