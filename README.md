@@ -37,7 +37,7 @@ const loadSynthSound = (instrumentName) => {
 I referenced [this example drum machine](http://sebpiq.github.io/WAAClock/demos/beatSequence.html) for the sample loading functions.
 
 ## Demo Beats
-Each purple square (or node) on the sequencer is a separate `div` element on the page. To create demo beats, I added classes to the elements that I wanted in each beat and added a 'click' event listener on the demo buttons that reset the grid and then 'clicks' each node in the beat.
+Each purple square (or node) on the sequencer is a separate `div` element on the page. To create demo beats, I added classes to the elements that I wanted in each beat, and then added a `click` event listener on the demo buttons that resets the grid and then 'clicks' each node in the beat.
 
 ````javascript
 $(".grid-node").click( (e) => {
