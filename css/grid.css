@@ -63,12 +63,13 @@ body {
 
 nav {
   height: 100px;
-  border-bottom: 10px solid black;
+  /*border-bottom: 1px solid black;*/
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-image: url(../images/purplewatercolorcraftberrybush.jpg);
-  background-size: contain;
+  padding: 0 30px;
+  /*background-image: url(../images/purplewatercolorcraftberrybush.jpg);*/
+  /*background-size: contain;*/
 }
 
 .author {
@@ -83,6 +84,7 @@ nav {
   -1px 1px 0 #FAFAFA,
   1px 1px 0 #FAFAFA;
   padding-top: 15px;
+  margin-right: 6.1%;
 }
 
 .author h2 {
@@ -94,43 +96,10 @@ nav {
   margin-top: 10px;
 }
 
-.links .icons li a:link {
-  color: #615fcb;
-}
-
-.links .icons li a:visited {
-  color: #615fcb;
-}
-.links .icons li a:hover {
-  color: #615fcb;
-  opacity: 0.8;
-}
-.links .icons li a:active {
-  color: #a9e4f7;
-}
-
-#personal-site {
-  text-decoration: none;
-  font-size: 24px;
-}
-
-.icons {
-  list-style: none;
-}
-.icons li {
-  font-size: 35px;
-  margin: 0 15px;
-  text-shadow:
-  -1px -1px 0 #FAFAFA,
-  1px -1px 0 #FAFAFA,
-  -1px 1px 0 #FAFAFA,
-  1px 1px 0 #FAFAFA;
-}
-
 #app-title {
   z-index: 1;
   text-align: center;
-  color: black;
+  color: #900C3F;
   text-shadow:
   -1px -1px 0 #FAFAFA,
   1px -1px 0 #FAFAFA,
@@ -140,18 +109,15 @@ nav {
   padding: 0;
   margin: 0;
   font-size: 30px;
-
+  text-transform: uppercase;
 
 }
 
-.icons {
-  display: flex;
-}
 
 /*MAIN STYLING*/
 
 main {
-  margin: 50px auto;
+  margin: 25px auto;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -472,6 +438,52 @@ label {
 
 .show-desc {
   display: block;
+}
+
+
+/*Foot styling*/
+
+footer {
+  margin-bottom: 0;
+  padding-top: 33px;
+  padding-right: 10px;
+}
+
+.links .icons li a:link {
+  color: black;
+}
+
+.links .icons li a:visited {
+  color: black;
+}
+.links .icons li a:hover {
+  color: black;
+  opacity: 0.6;
+}
+.links .icons li a:active {
+  color: black;
+}
+
+#personal-site {
+  text-decoration: none;
+  font-size: 30px;
+}
+
+.icons {
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 11px;
+}
+
+.icons li {
+  font-size: 35px;
+  margin: 0 15px;
+  text-shadow:
+  -1px -1px 0 #615fcb,
+  1px -1px 0 #615fcb,
+  -1px 1px 0 #615fcb,
+  1px 1px 0 #615fcb;
 }
 
 /*end of document*/
