@@ -55,7 +55,7 @@ $("#reset").click( (e) => {
   $clickedNodes.click();
 });
 // I added specific classes to nodes that are in demo beats
-// First reset, the board, then click demo nodes
+// First reset the board, then click demo nodes
 $("#demo1").click( (e) => {
   $("#reset").click();
   $(".demo-beat-one").click();
